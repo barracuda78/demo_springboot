@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="001-create-table-country.xml" author="barracuda">
+
+        <preConditions>
+            <not>
+                <tableExists schemaName="public" tableName="country"/>
+            </not>
+        </preConditions>
+
+        <comment>Create public.country</comment>
+
+        <createTable tablespace="pg_default" schemaName="public" tableName="country">
+            <column name="id" type="BIGINT" generationType="ALWAYS" autoIncrement="true">
+                <constraints primaryKey="true" unique="true"/>
+            </column>
+            <column name="name" type="varchar(40)" >
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="is_active" type="boolean" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable schemaName="public" tableName="country"/>
+        </rollback>
+
+    </changeSet>
+</databaseChangeLog>

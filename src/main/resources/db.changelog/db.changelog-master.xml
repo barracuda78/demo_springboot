@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <!--DDL-->
+    <include file="db.changelog/001-create-table-country.xml" context="local"/>
+
+    <!--DML-->
+    <include file="db.changelog/001-insert-into-country.xml" context="local"/>
+
+</databaseChangeLog>
