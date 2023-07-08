@@ -14,3 +14,35 @@ services:
     volumes:
       - ./db_setup:/docker-entrypoint-initdb.d
       - ./pg_data:/var/lib/postgresql/data
+
+  localstack:
+    image: localstack/localstack:latest
+    container_name: local_aws_services
+    restart: always
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sns,sqs,cloudformation
+      - DEFAULT_REGION=us-east-1
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - './localstack_setup:/docker-entrypoint-initaws.d'
+      - './localstack:/var/lib/localstack'
+
+  sqs-admin:
+    image: wheniwork/sqs-admin
+    container_name: local_sqs_web_ui
+    environment:
+      AWS_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: local
+      AWS_SECRET_ACCESS_KEY: local
+      SQS_ENDPOINT: http://localstack:4566
+      SQS_ADMIN_PORT: 8002
+      #     https://github.com/aaronshaf/sqs-admin/issues/2#issuecomment-751356902
+      #     If you want to run SQS-admin through Docker Compose, you need to set an environment
+      #     variable HOSTNAME_EXTERNAL with value host.docker.internal for LocalStack container.
+      HOSTNAME_EXTERNAL: host.docker.internal
+    ports:
+      - "8002:8002"
+    depends_on:
+      - localstack
