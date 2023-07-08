@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.api.dto.CountryCreateRequestDto;
 import com.example.demo.api.dto.CountryResponseDto;
 import com.example.demo.repository.CountryRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,16 @@ public class CountryServiceImpl implements CountryService {
         return countries.stream()
                 .map(c -> new CountryResponseDto(c.getId(), c.getName(), c.getIsActive()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Long createCountry(CountryCreateRequestDto dto) {
+        final Country country = Country.builder()
+                .name(dto.getName())
+                .isActive(dto.getIsActive())
+                .build();
+        countryRepository.save(country);
+        return country.getId();
     }
 
 }

@@ -1,23 +1,32 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
+import jakarta.persistence.*;
+import lombok.*;
+import org.antlr.v4.runtime.misc.NotNull;
 
 @Entity
 @Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Table(name = "country")
 public class Country {
 
     @Id
     @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @NonNull
+    @NotNull
+    @Column(unique = true)
     private String name;
 
+    @NonNull
+    @NotNull
     @Column(name = "is_active")
     private Boolean isActive;
 
