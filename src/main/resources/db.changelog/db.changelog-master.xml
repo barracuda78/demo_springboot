@@ -6,8 +6,14 @@
 
     <!--DDL-->
     <include file="db.changelog/001-create-table-country.xml" context="local"/>
+    <include file="db.changelog/002-create-table-users.xml" context="local"/>
+    <include file="db.changelog/003-create-table-authority.xml" context="local"/>
+    <include file="db.changelog/004-create-table-user-authority.xml" context="local"/>
 
     <!--DML-->
-    <include file="db.changelog/001-insert-into-country.xml" context="local"/>
+    <include file="db.changelog/101-insert-into-country.xml" context="local"/>
+    <include file="db.changelog/102-insert-into-users.xml" context="local"/>
+    <include file="db.changelog/103-insert-into-authority.xml" context="local"/>
+    <include file="db.changelog/104-insert-into-user-authority.xml" context="local"/>
 
 </databaseChangeLog>
