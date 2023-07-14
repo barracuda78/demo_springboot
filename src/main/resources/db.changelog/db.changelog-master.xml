@@ -9,6 +9,7 @@
     <include file="db.changelog/002-create-table-users.xml" context="local"/>
     <include file="db.changelog/003-create-table-authority.xml" context="local"/>
     <include file="db.changelog/004-create-table-user-authority.xml" context="local"/>
+    <include file="db.changelog/005-create-table-message.xml" context="local"/>
 
     <!--DML-->
     <include file="db.changelog/101-insert-into-country.xml" context="local"/>
