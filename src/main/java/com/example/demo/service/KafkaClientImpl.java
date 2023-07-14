@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.api.dto.KafkaMessageRequestDto;
-import com.example.demo.kafka.producer.SampleProducer;
+import com.example.demo.kafka.producer.KafkaSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KafkaClientImpl implements KafkaClient {
 
-    private final SampleProducer sampleProducer;
+    private final KafkaSender<String, String> kafkaSender;
+
     @Override
     public Long sendMessage(KafkaMessageRequestDto dto) {
-        sampleProducer.sendToKafka(dto.getTopic(), dto.getKey(), dto.getValue());
+        kafkaSender.sendToKafka(dto.getTopic(), dto.getKey(), dto.getValue());
         return 42L;
     }
 

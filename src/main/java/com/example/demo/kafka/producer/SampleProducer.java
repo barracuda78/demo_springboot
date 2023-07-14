@@ -11,7 +11,7 @@ import java.util.concurrent.Future;
 
 @Component
 @RequiredArgsConstructor
-public class SampleProducer {
+public class SampleProducer implements KafkaSender<String, String> {
 
     public Properties createProperties() {
         Properties properties = new Properties();
@@ -21,11 +21,13 @@ public class SampleProducer {
         return properties;
     }
 
-    public void sendToKafka(String topic, String key, String value) {
+    @Override
+    public Future sendToKafka(String topic, String key, String value) {
         final KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(createProperties());
         final ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, key, value);
-        Future<RecordMetadata> send = kafkaProducer.send(producerRecord);
+        Future<RecordMetadata> future = kafkaProducer.send(producerRecord);
         kafkaProducer.close();
+        return  future;
     }
 
 }

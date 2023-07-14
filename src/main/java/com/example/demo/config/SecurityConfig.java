@@ -47,7 +47,7 @@ public class SecurityConfig {
             .and()
             .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET, "/api/v1/**")
-                .hasAnyAuthority("READ")
+                .hasAuthority("READ")
                 .requestMatchers(HttpMethod.POST, "/api/v1/**")
                 .hasAnyAuthority("READ", "WRITE", "UPDATE", "DELETE");
         return http.build();
