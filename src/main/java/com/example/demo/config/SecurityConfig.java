@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import com.example.demo.security.CustomAuthenticationProvider;
+import com.example.demo.security.LogSecurityFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -36,13 +38,16 @@ public class SecurityConfig {
         http
             .csrf().disable()
             .cors().disable()
+            .addFilterAfter(
+                new LogSecurityFilter(),
+                BasicAuthenticationFilter.class)
             .authenticationProvider(customAuthenticationProvider)
             .httpBasic(Customizer.withDefaults())
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeHttpRequests()
-            .requestMatchers(HttpMethod.GET, "/api/v1/**")
-            .hasAnyAuthority("READ", "WRITE")
+                .requestMatchers(HttpMethod.GET, "/api/v1/**")
+                .hasAnyAuthority("READ")
                 .requestMatchers(HttpMethod.POST, "/api/v1/**")
                 .hasAnyAuthority("READ", "WRITE", "UPDATE", "DELETE");
         return http.build();
