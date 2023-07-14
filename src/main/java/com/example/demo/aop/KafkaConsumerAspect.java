@@ -26,8 +26,7 @@ public class KafkaConsumerAspect {
 
     @After("callGetCountries()")
     public void afterGetCountries(JoinPoint jp) {
-        log.info("=============after get countries===================");
-        log.info("afterGetCountries " + jp.toString());
+        log.info("=============afterGetCountries " + jp.toString() + "=============");
     }
 
     @AfterReturning(pointcut = "callKafkaConsumer()", returning = "message")
