@@ -1,6 +1,8 @@
 package com.example.demo.config;
 
+import com.example.demo.security.CSRFTokenFilter;
 import com.example.demo.security.CustomAuthenticationProvider;
+import com.example.demo.security.CustomCsrfTokenRepository;
 import com.example.demo.security.LogSecurityFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +22,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -36,11 +40,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+//            .csrf((csrf) -> csrf.csrfTokenRepository(new CustomCsrfTokenRepository()))
+//            .csrf((csrf) -> csrf.ignoringRequestMatchers("/api/*"))
+//            .cors(AbstractHttpConfigurer::disable)
             .csrf().disable()
             .cors().disable()
             .addFilterAfter(
                 new LogSecurityFilter(),
                 BasicAuthenticationFilter.class)
+//            .addFilterAfter(
+//                new CSRFTokenFilter(),
+//                CsrfFilter.class)
             .authenticationProvider(customAuthenticationProvider)
             .httpBasic(Customizer.withDefaults())
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
