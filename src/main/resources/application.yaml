@@ -11,3 +11,10 @@ spring:
     enabled: true
     change-log: classpath:db.changelog/db.changelog-master.xml
     contexts: local
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: actuator,beans,health,integrationgraph,liquibase,mappings,metrics,threaddump
+    enabled-by-default: true

@@ -39,6 +39,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        final String[] getMatchers = {"/api/v1/**", "/actuator", "/beans", "/health", "/integrationgraph", "/liquibase", "/mappings", "/metrics", "/threaddump"};
+
         http
 //            .csrf((csrf) -> csrf.csrfTokenRepository(new CustomCsrfTokenRepository()))
 //            .csrf((csrf) -> csrf.ignoringRequestMatchers("/api/*"))
@@ -56,10 +59,10 @@ public class SecurityConfig {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET, "/api/v1/**")
+                .requestMatchers(HttpMethod.GET, "/api/v1/**", "/actuator", "/beans", "/health", "/integrationgraph", "/liquibase", "/mappings", "/metrics", "/threaddump")
                 .hasAuthority("READ")
                 .requestMatchers(HttpMethod.POST, "/api/v1/**")
-                .hasAnyAuthority("READ", "WRITE", "UPDATE", "DELETE");
+                .hasAnyAuthority("WRITE", "UPDATE", "DELETE");
         return http.build();
     }
 
