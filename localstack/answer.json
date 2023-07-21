@@ -1,0 +1,29 @@
+INFO: Environment variable "AWS_DEFAULT_REGION" will be overwritten by "DEFAULT_REGION"
+{
+    "Subscriptions": [
+        {
+            "SubscriptionArn": "arn:aws:sns:us-east-1:000000000000:productmanagement-shared-dde-poms-core-all-entities-topic.fifo:4ed67cdc-c772-4b4b-99f0-cadf429a705c",
+            "Owner": "000000000000",
+            "Protocol": "sqs",
+            "Endpoint": "arn:aws:sqs:us-east-1:000000000000:productmanagement-shared-dde-poms-core-all-entities-queue.fifo",
+            "TopicArn": "arn:aws:sns:us-east-1:000000000000:productmanagement-shared-dde-poms-core-all-entities-topic.fifo"
+        }
+    ]
+}
+INFO: Environment variable "AWS_DEFAULT_REGION" will be overwritten by "DEFAULT_REGION"
+{
+    "MessageId": "dacc836a-adf9-4ae3-8d8b-191178eb181d",
+    "SequenceNumber": "14516498064681730048"
+}
+INFO: Environment variable "AWS_DEFAULT_REGION" will be overwritten by "DEFAULT_REGION"
+{
+    "Messages": [
+        {
+            "MessageId": "db040d5d-45df-424c-82e9-a50f10f5ee92",
+            "ReceiptHandle": "ZTg2ZWQzOTMtNjFhMS00NjljLTkwYzEtZDFkYTJiZGVkYTI0IGFybjphd3M6c3FzOnVzLWVhc3QtMTowMDAwMDAwMDAwMDA6cHJvZHVjdG1hbmFnZW1lbnQtc2hhcmVkLWRkZS1wb21zLWNvcmUtYWxsLWVudGl0aWVzLXF1ZXVlLmZpZm8gZGIwNDBkNWQtNDVkZi00MjRjLTgyZTktYTUwZjEwZjVlZTkyIDE2ODk5NDI3MDQuOTA2NDUwNw==",
+            "MD5OfBody": "d97fd90db5ae99ec5cfa7821d8b44e3e",
+            "Body": "test-message-1"
+        }
+    ]
+}
+INFO: Environment variable "AWS_DEFAULT_REGION" will be overwritten by "DEFAULT_REGION"

@@ -3,16 +3,14 @@ package com.example.demo.api.controller;
 import com.example.demo.api.dto.CountryCreateRequestDto;
 import com.example.demo.api.dto.CountryResponseDto;
 import com.example.demo.api.dto.KafkaMessageRequestDto;
+import com.example.demo.service.AwsService;
 import com.example.demo.service.CountryService;
 import com.example.demo.service.KafkaClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -22,6 +20,8 @@ public class DemoController {
     private final CountryService countryService;
 
     private final KafkaClient kafkaClient;
+
+    private final AwsService awsService;
 
     @GetMapping("api/v1/names")
     ResponseEntity<List<String>> getAllNames() {
@@ -45,6 +45,12 @@ public class DemoController {
     ResponseEntity<Long> sendToKafka(@RequestBody KafkaMessageRequestDto dto) {
         final Long newCountryId = kafkaClient.sendMessage(dto);
         return ResponseEntity.ok(newCountryId);
+    }
+
+    @GetMapping("api/v1/sqs/{message}")
+    ResponseEntity<String> sendToSqs(@PathVariable("message") String message) {
+        awsService.sendToSqs(message);
+        return ResponseEntity.ok(message + " sent.");
     }
 
 }

@@ -1,0 +1,79 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  RetentionPeriod:
+    Type: Number
+    Default: 50000
+    Description: Message retention period in all queues
+
+Resources:
+
+  AllEntitiesDeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: productmanagement-shared-dde-poms-core-all-entities-queue-dlq.fifo
+      FifoQueue: true
+
+  AllEntitiesQueue:
+    Type: AWS::SQS::Queue
+    DependsOn: AllEntitiesDeadLetterQueue
+    Properties:
+      QueueName: productmanagement-shared-dde-poms-core-all-entities-queue.fifo
+      FifoQueue: true
+      MessageRetentionPeriod: !Ref RetentionPeriod
+      ContentBasedDeduplication: true
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt AllEntitiesDeadLetterQueue.Arn
+        maxReceiveCount: 4
+
+  AdminSyncEntitiesDeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: productmanagement-shared-dde-poms-sync-admin-entities-queue-dlq.fifo
+      FifoQueue: true
+      MessageRetentionPeriod: !Ref RetentionPeriod
+
+  AdminSyncEntitiesQueue:
+    Type: AWS::SQS::Queue
+    DependsOn: AdminSyncEntitiesDeadLetterQueue
+    Properties:
+      QueueName: productmanagement-shared-dde-poms-sync-admin-entities-queue.fifo
+      FifoQueue: true
+      ContentBasedDeduplication: true
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt AdminSyncEntitiesDeadLetterQueue.Arn
+        maxReceiveCount: 4
+
+  AllEntitiesTopic:
+    Type: AWS::SNS::Topic
+    DependsOn: AllEntitiesQueue
+    Properties:
+      TopicName: productmanagement-shared-dde-poms-core-all-entities-topic.fifo
+      FifoTopic: true
+      ContentBasedDeduplication: true
+
+  AllEntitiesSubscription:
+    Type: AWS::SNS::Subscription
+    DependsOn: AllEntitiesTopic
+    Properties:
+      Endpoint: !GetAtt AllEntitiesQueue.Arn
+      Protocol: sqs
+      RawMessageDelivery: true
+      TopicArn: !Ref AllEntitiesTopic
+
+  SqsPolicy:
+    Type: AWS::SQS::QueuePolicy
+    DependsOn: AllEntitiesTopic
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AllowSendMessages
+            Effect: Allow
+            Principal:
+              AWS: !GetAtt AllEntitiesTopic.Arn
+            Action: sqs:SendMessage
+            Resource: "*"
+      Queues:
+        - !Ref AllEntitiesQueue
+        - !Ref AdminSyncEntitiesQueue

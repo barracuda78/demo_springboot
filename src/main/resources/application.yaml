@@ -18,3 +18,9 @@ management:
       exposure:
         include: actuator,beans,health,integrationgraph,liquibase,mappings,metrics,threaddump
     enabled-by-default: true
+
+aws:
+  sqs:
+    queueUrl: http://localhost:4566/000000000000/productmanagement-shared-dde-poms-sync-admin-entities-queue.fifo
+  sns:
+    topicArn: arn:aws:sns:us-east-1:000000000000:productmanagement-shared-dde-poms-core-all-entities-topic.fifo

@@ -59,7 +59,7 @@ public class SecurityConfig {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET, "/api/v1/**", "/actuator", "/beans", "/health", "/integrationgraph", "/liquibase", "/mappings", "/metrics", "/threaddump")
+                .requestMatchers(HttpMethod.GET, "/api/v1/**", "/api/v1/sqs", "/actuator", "/beans", "/health", "/integrationgraph", "/liquibase", "/mappings", "/metrics", "/threaddump")
                 .hasAuthority("READ")
                 .requestMatchers(HttpMethod.POST, "/api/v1/**")
                 .hasAnyAuthority("WRITE", "UPDATE", "DELETE");
